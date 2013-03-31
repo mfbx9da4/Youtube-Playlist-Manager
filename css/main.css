@@ -1,0 +1,239 @@
+* {
+	margin: 0px;
+	padding: 0px;
+
+
+}
+
+html {
+	width: 100%;
+	height: 100%;
+	background-color: #fbfbfb;
+}
+
+body {
+	width: 960px;
+	margin: 0px auto;
+	margin-top: 50px;
+	font-size: 12px;
+	font-family: Arial, sans-serif;
+}
+
+hr {
+	clear: both;
+	display: block;
+
+	height: 0px;
+	border: 0px;
+	border-top: 1px solid #EEE;
+	border-bottom: 1px solid #FFF;
+	margin: 20px 0px;
+}
+
+a {
+	color: #438bc5;
+	text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }
+
+body > header { margin-bottom: 20px; }
+body > header h1 { position: relative; }
+
+body > header h1::before {
+	content: " ";
+	position: absolute;
+	top: 0px; left: 0px;
+	width: 100%;
+	height: 100%;
+
+	background-image: linear-gradient(180deg, rgba(251, 251, 251, 0.5), rgba(251, 251, 251, 0));
+}
+
+#content {
+	border: 1px solid #EEE;
+	overflow: hidden;
+}
+
+#content > header {
+	color: #222;
+	background-color: #f7f7f7;
+	padding: 20px;
+	border-bottom: 1px solid #DDD;
+}
+
+#content > header h2 {
+	text-shadow: 0px 1px #FFF;
+}
+
+.action_bar {
+	background-color: #EEE;
+	padding: 10px;
+	border-bottom: 1px solid #CCC;
+}
+
+.action_bar input[type=checkbox] {
+	width: 50px;
+	height: 30px;
+	margin-left: -10px;
+	float: left;
+}
+
+.dropdown {
+	height: 20px;
+	font-weight: bold;
+
+	background-color: #FFF;
+	background-image: linear-gradient(180deg, #FFF, #F5F5F5);
+
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	padding: 5px 10px 0px 10px;
+	display: inline-block;
+	padding-right: 40px;
+	position: relative;
+	cursor: pointer;
+}
+
+.dropdown::after {
+	content: "▼";
+	font-size: 8px;
+	text-shadow: 0px 1px #FFF;
+	color: #666;
+
+	width: 1px;
+	height: 100%;
+	border-left: 1px solid #EEE;
+	padding-top: 6px;
+	padding-left: 7px;
+
+	position: absolute;
+	right: 16px; top: 0px;
+}
+
+.dropdown ul {
+	position: absolute;
+	top: 100%; left: 0px;
+	z-index: 99;
+	list-style: none;
+
+	background-color: #FFF;
+	background-image: linear-gradient(180deg, #FFF, #F5F5F5);
+	padding: 10px;
+
+	border: 1px solid #CCC;
+	border-radius: 0px 0px 3px 3px;
+	display: none;
+}
+
+.dropdown ul li {
+	padding: 5px;
+	white-space: nowrap;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.dropdown ul li:hover {
+	color: #FFF;
+	background-color: #333;
+}
+
+.dropdown.opened ul {
+	display: block;
+}
+
+.dropdown ul li {
+	font-weight: bold;
+}
+
+.listView {
+	list-style: none;
+}
+
+	#playlist_collection li {
+		height: 50px;
+		padding: 10px 0px;
+		border-bottom: 1px solid #EEE;
+
+		position: relative;
+		background-color: #FFF;
+		overflow: hidden;
+		cursor: pointer;
+	}
+
+	#playlist_collection li:last-child {
+		border-bottom: 0px;
+	}
+
+	#playlist_collection .title {
+		font-size: 13px;
+		margin-bottom: 3px;
+		display: inline-block;
+	}
+
+	#playlist_collection .itemCount {
+
+	}
+
+	#playlist_collection .info { padding: 10px; }
+
+	#playlist_collection .thumbnails {
+		float: left;
+		margin-right: 10px;
+	}
+
+	#playlist_collection .thumbnails img { float: left; }
+	#playlist_collection .thumbnails img:first-child { border-radius: 3px 0px 0px 3px; }
+	#playlist_collection .thumbnails img:last-child { border-radius: 0px 3px 3px 0px; }
+
+	#playlist_collection input[type=checkbox] {
+		width: 50px;
+		height: 50px;
+		float: left;
+	}
+
+	#playlist_collection .thumbnail .title {
+		font-size: 14px;
+		padding: 5px 10px;
+	}
+
+	#playlist_item_collection li {
+		background-color: #FFF;
+		overflow: hidden;
+		padding: 10px;
+		border-bottom: 1px solid #EEE;
+	}
+
+	.listView .title { font-weight: bold; }
+
+	.listView .thumbnail {
+		float: left;
+		width: 142px;
+		height: 80px;
+		position: relative;
+		background-position: center center;
+		background-size: 100% 100%;
+	}
+
+	.listView .thumbnail .itemCount,
+	.listView .thumbnail .duration {
+		position: absolute;
+		bottom: 0px; right: 0px;
+
+		color: #FFF;
+		font-weight: bold;
+		font-size: 11px;
+
+		background-color: rgba(0,0,0,0.7);
+		padding: 3px 7px;
+		border-top-left-radius: 3px;
+	}
+
+	#playlist_item_collection .thumbnail { margin-right: 10px; }
+	#playlist_item_collection .description {
+		color: #777;
+		width: 400px;
+		white-space: pre-wrap;
+		overflow: hidden;
+		padding-top: 10px;
+	}
