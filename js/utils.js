@@ -39,13 +39,13 @@ define(["jquery"], function($) {
 		return str.join("&");
 	};
 
-	Utils.request = function(kind, data, callback) {
+	Utils.request = function(type, resource, data, callback) {
 		Utils.auth(function(token) {
 			data.access_token = Utils.cookie.get("access_token");
 
 			$.ajax({
-				url: "https://www.googleapis.com/youtube/v3/" + kind + "?" + Utils.serialize(data),
-				type: "GET",
+				url: "https://www.googleapis.com/youtube/v3/" + resource + "?" + Utils.serialize(data),
+				type: type,
 				async: false,
 				success: callback
 			});

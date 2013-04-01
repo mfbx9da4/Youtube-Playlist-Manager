@@ -24,7 +24,7 @@ define([
 				return;
 			}
 
-			Utils.request("playlistItems", {
+			Utils.request("GET", "playlistItems", {
 
 					part: "id,snippet,contentDetails",
 					playlistId: self.pid,
@@ -44,9 +44,9 @@ define([
 					return playlistItem.contentDetails.videoId;
 				});
 
-			Utils.request("videos", {
+			Utils.request("GET", "videos", {
 
-					id: videoIds,
+					id: videoIds.join(","),
 					part: "id,snippet,contentDetails,statistics"
 
 				}, function(data) {

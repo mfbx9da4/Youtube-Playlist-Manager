@@ -22,7 +22,7 @@ define([
 				return;
 			}
 
-			Utils.request("playlists", {
+			Utils.request("GET", "playlists", {
 
 					part: "id,snippet,contentDetails",
 					fields: "items(id,snippet/title,contentDetails/itemCount)",
@@ -42,7 +42,7 @@ define([
 
 			// First we need to aquire the playlist id
 			// Favorites, likes, etc. are stored in the channel resource
-			Utils.request("channels", {
+			Utils.request("GET", "channels", {
 
 					part: "contentDetails",
 					fields: "items/contentDetails/relatedPlaylists",
@@ -54,7 +54,7 @@ define([
 					var fav_id = data.items[0].contentDetails.relatedPlaylists.favorites;
 
 					// Now we can fetch the title, and itemCount
-					Utils.request("playlists", {
+					Utils.request("GET", "playlists", {
 
 							id: fav_id,
 							part: "id,snippet,contentDetails",
@@ -78,7 +78,7 @@ define([
 				});
 
 			while (playlistIds.length) {		
-				Utils.request("playlistItems", {
+				Utils.request("GET", "playlistItems", {
 
 						playlistId: playlistIds.pop(),
 						part: "snippet",

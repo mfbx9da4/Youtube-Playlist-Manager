@@ -13,11 +13,11 @@ I was tired of Youtube's default playlist managing capabilities, so I decided to
 #####Features (implemented):
 
 * Export playlists
+* Remove duplicates
+* Remove deleted videos
 
 #####Features (planned):
 
-* Remove duplicates
-* Remove deleted videos
 * Sort playlists by date added
 
 #####Dependencies:
