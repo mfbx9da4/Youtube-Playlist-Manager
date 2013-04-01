@@ -1,7 +1,7 @@
 define([
 	"utils",
-	"jquery", 
-	"underscore", 
+	"jquery",
+	"underscore",
 	"backbone",
 	"models/playlist"
 
@@ -22,58 +22,76 @@ define([
 				return;
 			}
 
-			Utils.auth(function(token) {
-				var query = {
+			Utils.request("playlists", {
+
 					part: "id,snippet,contentDetails",
+					fields: "items(id,snippet/title,contentDetails/itemCount)",
 					mine: true,
 					maxResults: 50,
-					access_token: token
-				};
 
-				$.ajax({
-					url: "https://www.googleapis.com/youtube/v3/playlists?" + Utils.serialize(query),
-					type: "GET",
-					async: false,
-
-					success: function(data) {
-						if (typeof data != "object") { data = JSON.parse(data); }
-						self.add(data.items);
-						self.retrieve_thumbnail_previews(data.items);
-					}
-				});
-			});
+				}, function(data) {
+					if (typeof data != "object") { data = JSON.parse(data); }
+					self.add(data.items);
+					self.retrieve_favorites_info();
+				}
+			);
 		},
 
-		retrieve_thumbnail_previews: function(data) {
+		retrieve_favorites_info: function() {
+			var self = this;
+
+			// First we need to aquire the playlist id
+			// Favorites, likes, etc. are stored in the channel resource
+			Utils.request("channels", {
+
+					part: "contentDetails",
+					fields: "items/contentDetails/relatedPlaylists",
+					mine: true,
+					maxResults: 1,
+
+				}, function(data) {
+					if (typeof data != "object") { data = JSON.parse(data); }
+					var fav_id = data.items[0].contentDetails.relatedPlaylists.favorites;
+
+					// Now we can fetch the title, and itemCount
+					Utils.request("playlists", {
+
+							id: fav_id,
+							part: "id,snippet,contentDetails",
+							fields: "items(id,snippet/title,contentDetails/itemCount)",
+							maxResults: 1,
+
+						}, function(data) {
+							if (typeof data != "object") { data = JSON.parse(data); }
+							self.add(data.items, { at: 0 });
+							self.retrieve_thumbnail_previews();
+						}
+					);
+				}
+			);
+		},
+
+		retrieve_thumbnail_previews: function() {
 			var self = this,
-				playlistIds = _.map(data, function(playlistItem) {
-					return playlistItem.id;
+				playlistIds = _.map(this.models, function(playlistItem) {
+					return playlistItem.attributes.id;
 				});
 
-			while (playlistIds.length) {			
-				Utils.auth(function(token) {
-					var query = {
+			while (playlistIds.length) {		
+				Utils.request("playlistItems", {
+
 						playlistId: playlistIds.pop(),
 						part: "snippet",
-						fields: "etag,items(snippet(thumbnails(default)))",
-						maxResults: 5,
-						access_token: token
-					};
+						fields: "items/snippet/thumbnails/default/url",
 
-					$.ajax({
-						url: "https://www.googleapis.com/youtube/v3/playlistItems?" + Utils.serialize(query),
-						type: "GET",
-						async: false,
-
-						success: function(data) {
-							if (typeof data != "object") { data = JSON.parse(data); }
-							self.models[playlistIds.length].set("thumbnailPreviews", data.items);
-						}
-					});
-				});
+					}, function(data) {
+						if (typeof data != "object") { data = JSON.parse(data); }
+						self.models[playlistIds.length].set("thumbnailPreviews", data.items);
+					}
+				);
 			}
 
-			localStorage.playlists = JSON.stringify(self.models);
+			localStorage.playlists = JSON.stringify(this.models);
 		}
 	});
 

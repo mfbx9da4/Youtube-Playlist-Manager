@@ -16,7 +16,7 @@ define(["jquery"], function($) {
 				Utils.cookie.set("access_token_expire", token.expires_at);
 				Utils.cookie.set("access_token", access_token);
 
-				callback(access_token);
+				loation.reload();
 			});
 		}
 	};
@@ -35,7 +35,21 @@ define(["jquery"], function($) {
 		}
 
 		return str.join("&");
-	}
+	};
+
+	Utils.request = function(kind, data, callback) {
+		Utils.auth(function(token) {
+			data.access_token = token;
+
+			$.ajax({
+				url: "https://www.googleapis.com/youtube/v3/" + kind + "?" + Utils.serialize(data),
+				type: "GET",
+				async: false,
+				success: callback
+			});
+		});
+	};
+
 
 	Utils.cookie = {
 		set: function(name, value, days) {

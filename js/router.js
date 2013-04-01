@@ -2,6 +2,7 @@ define([
 	"jquery",
 	"underscore",
 	"backbone",
+
 	"views/playlist_collection",
 	"views/playlist_item_collection"
 
@@ -14,7 +15,7 @@ define([
 		},
 
 		render: function (view, options) {
-			if (this.currentView) { this.currentView.$el.empty().unbind(); }
+			if (this.currentView) { this.currentView.$el.unbind(); }
 
 			view = new view(options);
 			view.render();
@@ -32,6 +33,11 @@ define([
 		});
 
 		router.on("route:default_route", function() {
+			var self = this;
+
+			if (!localStorage.playlists)
+			$("#long_load").fadeIn(function() { self.render(PlaylistCollectionView); });
+			else 
 			this.render(PlaylistCollectionView);
 		});
 
