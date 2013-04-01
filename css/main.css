@@ -1,9 +1,4 @@
-* {
-	margin: 0px;
-	padding: 0px;
-
-
-}
+* { margin: 0px; padding: 0px; }
 
 html {
 	width: 100%;
@@ -30,12 +25,13 @@ hr {
 	margin: 20px 0px;
 }
 
-a {
-	color: #438bc5;
-	text-decoration: none;
-}
-
+a { color: #438bc5; text-decoration: none; }
 a:hover { text-decoration: underline; }
+
+
+/* ==================== */
+/* ====== HEADER ====== */
+/* ==================== */
 
 body > header { margin-bottom: 20px; }
 body > header h1 { position: relative; }
@@ -50,8 +46,13 @@ body > header h1::before {
 	background-image: linear-gradient(180deg, rgba(251, 251, 251, 0.5), rgba(251, 251, 251, 0));
 }
 
+/* ===================== */
+/* ====== CONTENT ====== */
+/* ===================== */
+
 #content {
-	border: 1px solid #EEE;
+	border-radius: 3px;
+	border: 1px solid #DDD;
 	overflow: hidden;
 }
 
@@ -65,6 +66,11 @@ body > header h1::before {
 #content > header h2 {
 	text-shadow: 0px 1px #FFF;
 }
+
+
+/* ======================== */
+/* ====== ACTION BAR ====== */
+/* ======================== */
 
 .action_bar {
 	background-color: #EEE;
@@ -82,6 +88,7 @@ body > header h1::before {
 .dropdown {
 	height: 20px;
 	font-weight: bold;
+	text-shadow: 0px 1px #FFF;
 
 	background-color: #FFF;
 	background-image: linear-gradient(180deg, #FFF, #F5F5F5);
@@ -98,22 +105,28 @@ body > header h1::before {
 .dropdown::after {
 	content: "▼";
 	font-size: 8px;
-	text-shadow: 0px 1px #FFF;
 	color: #666;
 
-	width: 1px;
-	height: 100%;
+	width: 20px;
+	height: 19px;
+	border-radius: 0px 3px 3px 0px;
+
 	border-left: 1px solid #EEE;
 	padding-top: 6px;
-	padding-left: 7px;
+	padding-left: 10px;
 
 	position: absolute;
-	right: 16px; top: 0px;
+	right: 0px; top: 0px;
+}
+
+.dropdown.opened::after {
+	border-left: 1px solid #DDD;
+	background-color: #EEE;
 }
 
 .dropdown ul {
 	position: absolute;
-	top: 100%; left: 0px;
+	top: 100%; left: -1px;
 	z-index: 99;
 	list-style: none;
 
@@ -121,8 +134,8 @@ body > header h1::before {
 	background-image: linear-gradient(180deg, #FFF, #F5F5F5);
 	padding: 10px;
 
-	border: 1px solid #CCC;
-	border-radius: 0px 0px 3px 3px;
+	border: 1px solid #BBB;
+	border-radius: 0px 3px 3px 3px;
 	display: none;
 }
 
@@ -136,6 +149,13 @@ body > header h1::before {
 .dropdown ul li:hover {
 	color: #FFF;
 	background-color: #333;
+	text-shadow: 0px -1px #000;
+}
+
+.dropdown.opened {
+	border-color: #BBB;
+	border-bottom: 1px solid #FFF;
+	border-radius: 3px 3px 0px 0px;
 }
 
 .dropdown.opened ul {
@@ -146,94 +166,89 @@ body > header h1::before {
 	font-weight: bold;
 }
 
-.listView {
-	list-style: none;
+.listView { list-style: none; }
+.listView .title { font-weight: bold; }
+
+.listView .thumbnail {
+	float: left;
+	width: 142px;
+	height: 80px;
+	position: relative;
+	background-position: center center;
+	background-size: 100% 100%;
 }
 
-	#playlist_collection li {
-		height: 50px;
-		padding: 10px 0px;
-		border-bottom: 1px solid #EEE;
 
-		position: relative;
-		background-color: #FFF;
-		overflow: hidden;
-		cursor: pointer;
-	}
+/* ================================= */
+/* ====== PLAYLIST COLLECTION ====== */
+/* ================================= */
 
-	#playlist_collection li:last-child {
-		border-bottom: 0px;
-	}
+#playlist_collection li {
+	height: 50px;
+	padding: 10px 0px;
+	border-bottom: 1px solid #EEE;
 
-	#playlist_collection .title {
-		font-size: 13px;
-		margin-bottom: 3px;
-		display: inline-block;
-	}
+	position: relative;
+	background-color: #FFF;
+	overflow: hidden;
+	cursor: pointer;
+}
 
-	#playlist_collection .itemCount {
+#playlist_collection .title {
+	font-size: 13px;
+	margin-bottom: 3px;
+	display: inline-block;
+}
 
-	}
+#playlist_collection .thumbnails {
+	float: left;
+	margin-right: 10px;
+}
 
-	#playlist_collection .info { padding: 10px; }
+#playlist_collection .thumbnails img { float: left; }
+#playlist_collection .thumbnails img:first-child { border-radius: 3px 0px 0px 3px; }
+#playlist_collection .thumbnails img:last-child { border-radius: 0px 3px 3px 0px; }
 
-	#playlist_collection .thumbnails {
-		float: left;
-		margin-right: 10px;
-	}
+#playlist_collection li:last-child { border-bottom: 0px; }
+#playlist_collection .info { padding: 10px; }
 
-	#playlist_collection .thumbnails img { float: left; }
-	#playlist_collection .thumbnails img:first-child { border-radius: 3px 0px 0px 3px; }
-	#playlist_collection .thumbnails img:last-child { border-radius: 0px 3px 3px 0px; }
+#playlist_collection input[type=checkbox] {
+	width: 50px;
+	height: 50px;
+	float: left;
+}
 
-	#playlist_collection input[type=checkbox] {
-		width: 50px;
-		height: 50px;
-		float: left;
-	}
 
-	#playlist_collection .thumbnail .title {
-		font-size: 14px;
-		padding: 5px 10px;
-	}
+/* ====================================== */
+/* ====== PLAYLIST ITEM COLLECTION ====== */
+/* ====================================== */
 
-	#playlist_item_collection li {
-		background-color: #FFF;
-		overflow: hidden;
-		padding: 10px;
-		border-bottom: 1px solid #EEE;
-	}
+#playlist_item_collection li {
+	background-color: #FFF;
+	overflow: hidden;
+	padding: 10px;
+	border-bottom: 1px solid #EEE;
+}
 
-	.listView .title { font-weight: bold; }
+#playlist_item_collection .thumbnail .itemCount,
+#playlist_item_collection .thumbnail .duration {
+	position: absolute;
+	bottom: 0px; right: 0px;
 
-	.listView .thumbnail {
-		float: left;
-		width: 142px;
-		height: 80px;
-		position: relative;
-		background-position: center center;
-		background-size: 100% 100%;
-	}
+	color: #FFF;
+	font-weight: bold;
+	font-size: 11px;
 
-	.listView .thumbnail .itemCount,
-	.listView .thumbnail .duration {
-		position: absolute;
-		bottom: 0px; right: 0px;
+	background-color: rgba(0,0,0,0.7);
+	padding: 3px 7px;
+	border-top-left-radius: 3px;
+}
 
-		color: #FFF;
-		font-weight: bold;
-		font-size: 11px;
-
-		background-color: rgba(0,0,0,0.7);
-		padding: 3px 7px;
-		border-top-left-radius: 3px;
-	}
-
-	#playlist_item_collection .thumbnail { margin-right: 10px; }
-	#playlist_item_collection .description {
-		color: #777;
-		width: 400px;
-		white-space: pre-wrap;
-		overflow: hidden;
-		padding-top: 10px;
-	}
+#playlist_item_collection .thumbnail { margin-right: 10px; }
+#playlist_item_collection .description {
+	color: #777;
+	width: 400px;
+	white-space: pre-wrap;
+	overflow: hidden;
+	padding-top: 10px;
+}
