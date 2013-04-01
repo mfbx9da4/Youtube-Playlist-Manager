@@ -79,19 +79,20 @@ define([
 				}
 			}
 
-			var txt = [];
+			var txt = [],
+				ln = escape("\n");
 
 			_.map(txt_data, function(data) {
 				_.map(data.items, function(item) {
 					var title = item.snippet.title;
 					var videoId = "https://youtube.com/watch?v=" + item.snippet.resourceId.videoId;
 
-					txt.push(title + "\n" + videoId);
+					txt.push(title + ln + videoId);
 				});
 			});
 
-			txt = txt.join("\n\n");
-			window.open("data:text/plain;charset=utf-8," + escape(txt), "_blank");
+			txt = txt.join(ln+ln);
+			window.open("data:text/plain;charset=utf-8," + txt, "_blank");
 
 			$("*").css("cursor", "");
 		}
