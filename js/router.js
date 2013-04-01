@@ -2,11 +2,12 @@ define([
 	"jquery",
 	"underscore",
 	"backbone",
+	"utils",
 
 	"views/playlist_collection",
 	"views/playlist_item_collection"
 
-], function($, _, Backbone, PlaylistCollectionView, PlaylistItemCollectionView) {
+], function($, _, Backbone, Utils, PlaylistCollectionView, PlaylistItemCollectionView) {
 	
 	var Router = Backbone.Router.extend({
 		routes: {
@@ -25,23 +26,25 @@ define([
 	});
 	
 	var initialize = function() {
+		Utils.auth(function() {
 
-		var router = new Router;
-		
-		router.on("route:playlist_select", function(pname, pid) {
-			this.render(PlaylistItemCollectionView, { pname: pname, pid: pid });
+			var router = new Router;
+			
+			router.on("route:playlist_select", function(pname, pid) {
+				this.render(PlaylistItemCollectionView, { pname: pname, pid: pid });
+			});
+
+			router.on("route:default_route", function() {
+				var self = this;
+
+				if (!localStorage.playlists && Utils.cookie.get("access_token"))
+				$("#msg_load").fadeIn(function() { self.render(PlaylistCollectionView); });
+				else 
+				this.render(PlaylistCollectionView);
+			});
+
+			Backbone.history.start();
 		});
-
-		router.on("route:default_route", function() {
-			var self = this;
-
-			if (!localStorage.playlists)
-			$("#long_load").fadeIn(function() { self.render(PlaylistCollectionView); });
-			else 
-			this.render(PlaylistCollectionView);
-		});
-
-		Backbone.history.start();
 	};
 	
 	return { initialize : initialize };

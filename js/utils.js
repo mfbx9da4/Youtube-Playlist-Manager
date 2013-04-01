@@ -3,22 +3,24 @@ define(["jquery"], function($) {
 	var Utils = {};
 
 	Utils.auth = function(callback) {
-		if (Utils.cookie.get("access_token_expire")*1000 > new Date().getTime()) {
-			callback(Utils.cookie.get("access_token"));
-		} else {
-			gapi.auth.authorize({
-				"client_id": "716237968116-bfsg986nn1ob5nqir6i7kmsjig4ncf27.apps.googleusercontent.com",
-				"scope": "http://gdata.youtube.com"
-			}, function() {
-				var token = gapi.auth.getToken(),
-					access_token = token.access_token;
+		var access_token_expire = parseInt(Utils.cookie.get("access_token_expire"), 10);
 
-				Utils.cookie.set("access_token_expire", token.expires_at);
-				Utils.cookie.set("access_token", access_token);
+		if (!access_token_expire || access_token_expire*1000 < new Date().getTime()) {
+			$("#msg_auth").fadeIn(function() {
+				gapi.auth.authorize({
+					"client_id": "716237968116-bfsg986nn1ob5nqir6i7kmsjig4ncf27.apps.googleusercontent.com",
+					"scope": "http://gdata.youtube.com"
+				}, function() {
+					var token = gapi.auth.getToken(),
+						access_token = token.access_token;
 
-				loation.reload();
+					Utils.cookie.set("access_token_expire", token.expires_at);
+					Utils.cookie.set("access_token", access_token);
+
+					location.reload();
+				});
 			});
-		}
+		} else { callback(); }
 	};
 
 	Utils.serialize = function(obj) {
@@ -39,7 +41,7 @@ define(["jquery"], function($) {
 
 	Utils.request = function(kind, data, callback) {
 		Utils.auth(function(token) {
-			data.access_token = token;
+			data.access_token = Utils.cookie.get("access_token");
 
 			$.ajax({
 				url: "https://www.googleapis.com/youtube/v3/" + kind + "?" + Utils.serialize(data),

@@ -12,6 +12,8 @@
 			<li>Remove deleted videos</li>
 		</ul>
 	</div>
+
+	<a class="button right" href="javascript:delete localStorage.playlists; location.reload();">Refetch playlists</a>
 </div>
 
 <ul class="listView" id="playlist_collection">
