@@ -58,8 +58,12 @@ define(["jquery"], function($) {
 	};
 
 	$("body").on("click", ".dropdown", function(e) {
-		$target = $(e.currentTarget);
+		var $target = $(e.currentTarget);
 		$target.toggleClass("opened");
+	}).on("click", function(e) {
+		var $target = $(e.currentTarget);
+		if (!($(e.target).hasClass("dropdown") || $(e.target).parent().hasClass("dropdown")))
+		$target.removeClass("opened");
 	});
 
 	$("body").on("click", ".action_bar input[type=checkbox]", function(e) {
