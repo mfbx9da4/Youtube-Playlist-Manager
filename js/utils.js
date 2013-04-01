@@ -57,7 +57,7 @@ define(["jquery"], function($) {
 		}
 	};
 
-	$("body").on("click", ".dropdown", function(e) {
+	$("html").on("click", ".dropdown", function(e) {
 		var $target = $(e.currentTarget);
 		$target.toggleClass("opened");
 	}).on("click", function(e) {
