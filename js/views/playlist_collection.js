@@ -72,6 +72,7 @@ define([
 					if (typeof nextPageToken == "string") { config.pageToken = nextPageToken; }
 
 					Utils.request("playlistItems", config, function(data) {
+						if (typeof data != "object") { data = JSON.parse(data); }
 						txt_data.push(data);
 						nextPageToken = data.nextPageToken;
 					});
