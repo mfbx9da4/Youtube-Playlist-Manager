@@ -10,11 +10,12 @@ I was tired of Youtube's default playlist managing capabilities, so I decided to
 
 ---
 
-#####Features:
+#####Planned Features:
 
 * Ability to export playlists
 * Ability to remove duplicates
 * Ability to remove deleted videos
+* Ability to sort playlists by date added
 * ...
 
 #####Dependencies:
