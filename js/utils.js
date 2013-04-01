@@ -63,7 +63,7 @@ define(["jquery"], function($) {
 	}).on("click", function(e) {
 		var $target = $(e.currentTarget);
 		if (!($(e.target).hasClass("dropdown") || $(e.target).parent().hasClass("dropdown")))
-		$target.removeClass("opened");
+		$(".dropdown").removeClass("opened");
 	});
 
 	$("body").on("click", ".action_bar input[type=checkbox]", function(e) {
