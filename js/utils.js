@@ -52,7 +52,6 @@ define(["jquery"], function($) {
 		});
 	};
 
-
 	Utils.cookie = {
 		set: function(name, value, days) {
 			if (days) {

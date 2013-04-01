@@ -7,9 +7,9 @@
 	<div class="dropdown">
 		<span>Action</span>
 		<ul>
-			<li>Save as text file</li>
-			<li>Remove duplicates</li>
-			<li>Remove deleted videos</li>
+			<li class="action_export_playlists">Export playlist(s)</li>
+			<li class="action_remove_duplicates">Remove duplicates</li>
+			<li class="action_remove_deleted_videos">Remove deleted videos</li>
 		</ul>
 	</div>
 
