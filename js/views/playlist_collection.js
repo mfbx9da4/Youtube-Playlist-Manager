@@ -39,7 +39,6 @@ define([
 
 		action_export_playlists: function(e) {
 
-
 			var self = this,
 				playlists = self.get_selection(),
 				txt_data = [],
@@ -95,6 +94,16 @@ define([
 			window.open("data:text/plain;charset=utf-8," + txt, "_blank");
 
 			$("*").css("cursor", "");
+		},
+
+		action_remove_duplicates: function(e) {
+			var self = this,
+				playlists = self.get_selection();
+		},
+
+		action_remove_deleted_videos: function(e) {
+			var self = this,
+				playlists = self.get_selection();
 		}
 	});
 

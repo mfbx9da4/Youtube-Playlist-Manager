@@ -24,25 +24,17 @@ define([
 				return;
 			}
 
-			Utils.auth(function(token) {
-				var query = {
+			Utils.request("playlistItems", {
+
 					part: "id,snippet,contentDetails",
 					playlistId: self.pid,
-					maxResults: 50,
-					access_token: token
-				};
+					maxResults: 50
 
-				$.ajax({
-					url: "https://www.googleapis.com/youtube/v3/playlistItems?" + Utils.serialize(query),
-					type: "GET",
-					async: false,
-
-					success: function(data) {
-						if (typeof data != "object") { data = JSON.parse(data); }
-						self.retrieve_video_resources(data.items);
-					}
-				});
-			});
+				}, function(data) {
+					if (typeof data != "object") { data = JSON.parse(data); }
+					self.retrieve_video_resources(data.items);
+				}
+			);
 		},
 
 		retrieve_video_resources: function(data) {
@@ -52,26 +44,18 @@ define([
 					return playlistItem.contentDetails.videoId;
 				});
 
-			Utils.auth(function(token) {
-				var query = {
+			Utils.request("videos", {
+
 					id: videoIds,
-					part: "id,snippet,contentDetails,statistics",
-					access_token: token
-				};
+					part: "id,snippet,contentDetails,statistics"
 
-				$.ajax({
-					url: "https://www.googleapis.com/youtube/v3/videos?" + Utils.serialize(query),
-					type: "GET",
-					async: false,
+				}, function(data) {
+					if (typeof data != "object") { data = JSON.parse(data); }
+					self.add(data.items);
 
-					success: function(data) {
-						if (typeof data != "object") { data = JSON.parse(data); }
-						self.add(data.items);
-
-						localStorage["playlist_" + self.pid] = JSON.stringify(self.models);
-					}
-				});
-			});
+					localStorage["playlist_" + self.pid] = JSON.stringify(self.models);
+				}
+			);
 		}
 	});
 
