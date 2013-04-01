@@ -137,10 +137,15 @@ define([
 				});
 			});
 
-			while (ids.length) { Utils.request("DELETE", "playlistItems", { id: ids.pop() }); }
+			if (ids.length) {
+				while (ids.length) { Utils.request("DELETE", "playlistItems", { id: ids.pop() }); }
+				delete localStorage.playlists;
+				location.reload();
+			} else {
+				alert("No dupliactes found!");
+				$("*").css("cursor", "");
+			}
 
-			delete localStorage.playlists;
-			location.reload();
 		},
 
 		action_remove_deleted_videos: function(e) {
@@ -222,12 +227,16 @@ define([
 
 			msg += "\n\nClick ok to delete them.";
 
-			if (confirm(msg)) {
+			if (invalidIds.length) {
+				if (confirm(msg)) {
+					while (invalidIds.length) { Utils.request("DELETE", "playlistItems", { id: invalidIds.pop() }); }
 
-				while (invalidIds.length) { Utils.request("DELETE", "playlistItems", { id: invalidIds.pop() }); }
-
-				delete localStorage.playlists;
-				location.reload();
+					delete localStorage.playlists;
+					location.reload();
+				} else { $("*").css("cursor", ""); }
+			} else {
+				alert("No deleted videos found!");
+				$("*").css("cursor", "");
 			}
 		}
 	});
