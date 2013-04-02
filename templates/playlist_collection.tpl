@@ -8,8 +8,8 @@
 		<span>Action</span>
 		<ul>
 			<li class="action_export_playlists">Export playlist(s)</li>
-			<li class="action_remove_duplicates">Remove duplicates</li>
-			<li class="action_remove_deleted_videos">Remove deleted videos</li>
+			<li class="action_find_duplicates">Find duplicates</li>
+			<li class="action_find_deleted_videos">Find deleted videos</li>
 		</ul>
 	</div>
 

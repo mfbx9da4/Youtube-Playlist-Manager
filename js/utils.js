@@ -43,10 +43,13 @@ define(["jquery"], function($) {
 		Utils.auth(function(token) {
 			data.access_token = Utils.cookie.get("access_token");
 
+			var async = data.async || false;
+			if (data.async) { delete data.async; }
+
 			$.ajax({
 				url: "https://www.googleapis.com/youtube/v3/" + resource + "?" + Utils.serialize(data),
 				type: type,
-				async: false,
+				async: async,
 				success: callback
 			});
 		});
@@ -70,6 +73,20 @@ define(["jquery"], function($) {
 			var result = search.exec(document.cookie);
 			return result ? result[1] : null;
 		}
+	};
+
+	Utils.dialog = function(title, content) {
+		var $dialog_container = $("<div id='dialog_container'></div>"),
+			$dialog = $("<div id='dialog'></div>"),
+			$title = $("<h3>" + title + "</h3>"),
+			$content = $("<div>" + content + "</div>");
+
+		if ($("#dialog_container").length) { $("#dialog_container").remove(); }
+		$dialog.append($title, $content);
+		$dialog_container.append($dialog);
+		$("body").append($dialog_container);
+
+		return $dialog;
 	};
 
 	$("html").on("click", ".dropdown", function(e) {
