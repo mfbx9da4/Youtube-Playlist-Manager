@@ -77,6 +77,12 @@ a:hover { text-decoration: underline; }
 	padding: 5px;
 }
 
+#donate {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+}
+
 /* ==================== */
 /* ====== HEADER ====== */
 /* ==================== */
