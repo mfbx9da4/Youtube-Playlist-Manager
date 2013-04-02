@@ -119,6 +119,7 @@ body > header h1::before {
 	background-color: #EEE;
 	padding: 10px;
 	border-bottom: 1px solid #CCC;
+	overflow: hidden;
 }
 
 .action_bar input[type=checkbox] {

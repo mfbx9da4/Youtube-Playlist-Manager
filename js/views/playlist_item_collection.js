@@ -13,6 +13,7 @@ define([
 
 		initialize: function(options) {
 			this.pname = decodeURIComponent(options.pname);
+			this.pid = options.pid;
 			this.collection = new PlaylistItemCollection(null, options);
 		},
 

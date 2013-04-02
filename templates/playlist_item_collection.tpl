@@ -2,6 +2,10 @@
 	<h2><%= pname %></h2>
 </header>
 
+<div class="action_bar">
+	<a class="button right" href="javascript:delete localStorage['playlist_<%= pid %>']; location.reload();">Refetch videos</a>
+</div>
+
 <ul class="listView" id="playlist_item_collection">
 	<% _.each(collection.models, function(model) {
 

@@ -207,21 +207,39 @@ define([
 
 				update();
 
-				var duplicates = {};
-				_.map(playlists, function(playlist) { $.extend(duplicates, playlist.duplicates); });
+				var duplicates = 0, i;
+				_.map(playlists, function(playlist) { duplicates += !!playlist.duplicates; });
 
-				if (Object.keys(duplicates).length) {
+				if (duplicates) {
 					$a = $("<hr><a href=\"javascript:void();\">Remove duplicates</a>");
 
 					$a.on("click", function(e) {
 						$dialog.find("div").html("<img src='img/loading.gif'>");
 
 						window.setTimeout(function() {
-							for (i in duplicates) {
-								_.map(duplicates[i].ids, function(id) {
-									Utils.request("DELETE", "playlistItems", { id: id });
-								});
-							}
+							_.map(playlists, function(playlist) {
+								var playlists_cache = JSON.parse(localStorage["playlists"]),
+									playlist_cache = JSON.parse(localStorage["playlist_" + playlist.id]),
+									count = 0;
+
+								for (i in playlist.duplicates) {
+									_.map(playlist.duplicates[i].ids, function(id) {
+										Utils.request("DELETE", "playlistItems", { id: id });
+										delete playlist_cache[id];
+										count++;
+									});
+								}
+
+								for (i in playlists_cache) {
+									if (playlists_cache[i].id == playlist.id) {
+										playlists_cache[i].contentDetails.itemCount -= count;
+									}
+								}
+
+								localStorage["playlists"] = JSON.stringify(playlists_cache);
+								localStorage["playlist_" + playlist.id] = JSON.stringify(playlist_cache);
+								localStorage.reload();
+							});
 
 							$dialog.find("div").html("<b>Duplicates removed!</b>");
 						}, 100);
@@ -325,11 +343,13 @@ define([
 
 				if (invalidIds.length) {
 
-					$a = $("<a href=\"javascript:void();\">Remove duplicates</a>");
+					$a = $("<a href=\"javascript:void();\">Remove deleted videos</a>");
 					$a.on("click", function(e) {
 						while (invalidIds.length) { Utils.request("DELETE", "playlistItems", { id: invalidIds.pop() }); }
-						delete localStorage.playlists;
-						location.reload();
+						//delete localStorage.playlists;
+						//location.reload();
+
+						$dialog.find("div").html("Deleted videos removed!");
 					});
 
 					$dialog.find("div").html(html);
