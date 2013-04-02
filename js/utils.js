@@ -79,9 +79,13 @@ define(["jquery"], function($) {
 		var $dialog_container = $("<div id='dialog_container'></div>"),
 			$dialog = $("<div id='dialog'></div>"),
 			$title = $("<h3>" + title + "</h3>"),
+			$close = $("<a id='dialog_close' href='javascript:void()'>close</a>"),
 			$content = $("<div>" + content + "</div>");
 
+		$close.on("click", function() { $("#dialog_container").remove(); });
 		if ($("#dialog_container").length) { $("#dialog_container").remove(); }
+		
+		$title.append($close);
 		$dialog.append($title, $content);
 		$dialog_container.append($dialog);
 		$("body").append($dialog_container);

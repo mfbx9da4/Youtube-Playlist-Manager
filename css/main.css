@@ -54,6 +54,13 @@ a:hover { text-decoration: underline; }
 	padding: 20px;
 	border-bottom: 1px solid #DDD;
 	background-color: #f7f7f7;
+	position: relative;
+}
+
+#dialog > h3 > a {
+	position: absolute;
+	right: 20px;
+	top: 20px;
 }
 
 #dialog > div {
