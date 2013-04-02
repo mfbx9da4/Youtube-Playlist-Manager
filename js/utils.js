@@ -84,7 +84,7 @@ define(["jquery"], function($) {
 
 		$close.on("click", function() { $("#dialog_container").remove(); });
 		if ($("#dialog_container").length) { $("#dialog_container").remove(); }
-		
+
 		$title.append($close);
 		$dialog.append($title, $content);
 		$dialog_container.append($dialog);

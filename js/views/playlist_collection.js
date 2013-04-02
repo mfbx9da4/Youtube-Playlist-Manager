@@ -96,7 +96,7 @@ define([
 
 			process = function() {
 				update();
-				var text = [], ln = escape("\r\n"), $download, $tab;
+				var text = [], ln = "\r\n", $download, $tab;
 
 				_.map(playlists, function(playlist) {
 					_.map(playlist.items, function(item) {
@@ -107,14 +107,14 @@ define([
 					});
 				});
 
-				text = text.join(ln+ln);
+				text = encodeURIComponent(text.join(ln+ln));
 				update();
 
 				$download = $("<a href=\"javascript:void();\">Download</a>");
-				$download.on("click", function(e) { window.open("data:binary/stream;charset=utf-8," + text, "_blank"); $("#dialog_container").remove(); });
+				$download.on("click", function(e) { window.open("data:binary/stream;charset=UTF-8;," + text, "_blank"); });
 
 				$tab = $("<a href=\"javascript:void();\">Open window</a>");
-				$tab.on("click", function(e) { window.open("data:text/plain;charset=utf-8," + text, "_blank"); $("#dialog_container").remove(); });
+				$tab.on("click", function(e) { window.open("data:text/plain;charset=UTF-8;," + text, "_blank"); });
 
 				$dialog.find("div").append($download, " or ", $tab);
 			};
