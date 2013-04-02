@@ -239,7 +239,7 @@ define([
 
 								localStorage["playlists"] = JSON.stringify(playlists_cache);
 								localStorage["playlist_" + playlist.id] = JSON.stringify(playlist_cache);
-								localStorage.reload();
+								location.reload();
 							});
 
 							$dialog.find("div").html("<b>Duplicates removed!</b>");
