@@ -95,6 +95,7 @@ define([
 			},
 
 			process = function() {
+				update();
 				var text = [], ln = escape("\r\n"), $download, $tab;
 
 				_.map(playlists, function(playlist) {
