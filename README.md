@@ -28,3 +28,4 @@ I was tired of Youtube's default playlist managing capabilities, so I decided to
 * Underscore.js
 * Backbone.js
 * RequireJS
+* Youtube API v3
