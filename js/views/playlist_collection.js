@@ -186,9 +186,9 @@ define([
 
 					for (id in playlist.duplicates) {
 						video = playlist.duplicates[id];
-						html += "<tr><th>" + video.ids.length;
-						html += "</th><th>" + video.title;
-						html += "</th><th><a href='https://youtube.com/watch?v=" + id + "' target='_blank'>" + id + "</a></th></tr>";
+						html += "<tr><td>" + video.ids.length;
+						html += "</td><td>" + video.title;
+						html += "</td><td><a href='https://youtube.com/watch?v=" + id + "' target='_blank'>" + id + "</a></td></tr>";
 					}
 
 					html += "</table>";
@@ -212,7 +212,7 @@ define([
 				_.map(playlists, function(playlist) { duplicates += !!playlist.duplicates; });
 
 				if (duplicates) {
-					$a = $("<hr><a href=\"javascript:void();\">Remove duplicates</a>");
+					$a = $("<hr><a href=\"javascript:void();\">Remove from playlist(s)</a>");
 
 					$a.on("click", function(e) {
 						$dialog.find("div").html("<img src='img/loading.gif'>");
@@ -344,7 +344,7 @@ define([
 
 				if (invalidIds.length) {
 
-					$a = $("<a href=\"javascript:void();\">Remove deleted videos</a>");
+					$a = $("<a href=\"javascript:void();\">Remove from playlist(s)</a>");
 					$a.on("click", function(e) {
 						while (invalidIds.length) { Utils.request("DELETE", "playlistItems", { id: invalidIds.pop() }); }
 						//delete localStorage.playlists;
