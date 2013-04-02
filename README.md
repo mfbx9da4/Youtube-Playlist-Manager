@@ -10,6 +10,8 @@ I was tired of Youtube's default playlist managing capabilities, so I decided to
 
 ---
 
+![Preview](https://dl.dropbox.com/u/14645664/web/sfdsfdsfds.PNG)
+
 #####Features (implemented):
 
 * Export playlists
@@ -19,6 +21,7 @@ I was tired of Youtube's default playlist managing capabilities, so I decided to
 #####Features (planned):
 
 * Sort playlists by date added
+* Sort by tags
 
 #####Dependencies:
 * jQuery
