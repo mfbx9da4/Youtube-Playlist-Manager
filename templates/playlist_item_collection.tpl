@@ -4,6 +4,7 @@
 
 <div class="action_bar">
 	<a class="button right" href="javascript:delete localStorage['playlist_<%= pid %>']; location.reload();">Refetch videos</a>
+	<div style="clear: both"></div>
 </div>
 
 <ul class="listView" id="playlist_item_collection">
