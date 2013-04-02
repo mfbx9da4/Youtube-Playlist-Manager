@@ -10,14 +10,14 @@
 
 <ul class="listView" id="playlist_item_collection">
 	<% _.each(collection.models, function(model) {
-
 		var playlistItem = model.attributes,
-			videoId = playlistItem.contentDetails.videoId,
+			videoId = playlistItem.id,
 			title = playlistItem.snippet.title,
 			description = playlistItem.snippet.description.replace(/[\s]{2}/g, ' ').substr(0, 100) + "...",
 			duration = playlistItem.contentDetails.duration,
 			itemCount = playlistItem.contentDetails.itemCount,
 			thumbnail = playlistItem.snippet.thumbnails.medium.url;
+
 
 		duration = duration.replace(/(P|T|S)*/g, '').
 							replace(/(\d)?(?:H|M)(\d)/g, '$1:$2').
