@@ -5,8 +5,8 @@ An advanced playlist manager for youtube, that lets you perform various batch ac
 This will become a chrome extension soon.
 I was tired of Youtube's default playlist managing capabilities, so I decided to create my own tool using Youtube's API.  
 
-[**Live Demo**](http://elias-schuett.de/indev/ypm/)  
-**CC-BY-SA Elias Schütt**
+[**Live Demo**](http://elias-schuett.de/git/Youtube-Playerlist-Manager/)  
+Open source under the [MIT](http://opensource.org/licenses/MIT) or [CC-BY-SA](https://creativecommons.org/licenses/by-sa/2.0/) license.
 
 ---
 
