@@ -6,7 +6,7 @@ This will become a chrome extension soon.
 I was tired of Youtube's default playlist managing capabilities, so I decided to create my own tool using Youtube's API.  
 
 **Open source under the [MIT](http://opensource.org/licenses/MIT) or [CC-BY-SA](https://creativecommons.org/licenses/by-sa/2.0/) license.**  
-[**Live Demo**](http://elias-schuett.de/git/Youtube-Playerlist-Manager/)  
+[**Live Demo**](http://elias-schuett.de/git/Youtube-Playlist-Manager/)  
 
 ---
 
