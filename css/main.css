@@ -77,11 +77,6 @@ a:hover { text-decoration: underline; }
 	padding: 5px;
 }
 
-#donate {
-	position: fixed;
-	bottom: 20px;
-	right: 20px;
-}
 
 /* ==================== */
 /* ====== HEADER ====== */
@@ -99,6 +94,7 @@ body > header h1::before {
 
 	background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
 }
+
 
 /* ===================== */
 /* ====== CONTENT ====== */
@@ -136,7 +132,7 @@ body > header h1::before {
 
 .action_bar input[type=checkbox] {
 	width: 50px;
-	height: 30px;
+	margin-top: 7px;
 	margin-left: -10px;
 	float: left;
 }
@@ -277,6 +273,9 @@ body > header h1::before {
 #playlist_collection .thumbnails {
 	float: left;
 	margin-right: 10px;
+	min-width: 335px;
+	background-color: #000;
+	border-radius: 3px;
 }
 
 #playlist_collection .thumbnails img { float: left; }
@@ -288,7 +287,7 @@ body > header h1::before {
 
 #playlist_collection input[type=checkbox] {
 	width: 50px;
-	height: 50px;
+	margin-top: 18px;
 	float: left;
 }
 

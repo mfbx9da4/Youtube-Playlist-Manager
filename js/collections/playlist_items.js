@@ -1,8 +1,8 @@
 define([
+
 	"utils",
 	"jquery", 
 	"underscore",
-
 	"backbone",
 	"models/playlist_item"
 

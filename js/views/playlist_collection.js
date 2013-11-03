@@ -1,13 +1,15 @@
 define([
+
 	"jquery", 
 	"underscore",
 	"backbone",
 	"utils",
 
 	"collections/playlists",
-	"text!templates/playlist_collection.tpl",
+	"plugins/text!templates/playlist_collection.tpl",
 
 ], function($, _, Backbone, Utils, PlaylistCollection, PlaylistCollectionTemplate) {
+
 	var PlaylistCollectionView = Backbone.View.extend({
 
 		el: "#content",

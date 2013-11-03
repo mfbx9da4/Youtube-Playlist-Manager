@@ -17,9 +17,9 @@ require.config({
 
 	paths: {
 		utils: "utils",
-		jquery: "libs/jquery/jquery-1.9.1.min",
-		underscore: "libs/underscore/underscore-min",
-		backbone: "libs/backbone/backbone-min",
+		jquery: "libs/jquery",
+		underscore: "libs/underscore",
+		backbone: "libs/backbone",
 		templates: "../templates",
 	}
 });
