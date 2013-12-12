@@ -457,7 +457,8 @@ define([
 						var response;
 						Utils.request("GET", "search", { 
 								q: title,
-						    	part: 'snippet'
+						    	part: 'snippet',
+						    	type: 'video'
 							}, function (data) {
 								var items = data.items;
 								for (var i = 0; i < items.length; i ++ ){
@@ -469,10 +470,12 @@ define([
 											function (data2) {
 												console.log(data2.items[0].contentDetails.duration)
 												var duration = data2.items[0].contentDetails.duration;
-												duration.replace('PT', '').replace('M', ':').replace('S', '');
+												duration = duration.replace('PT', '').replace('M', ':').replace('S', '');
 												video.duration = duration;
 											}
 										)
+									} else {
+										video.duration = '';
 									}
 									videos.push(video)
 								}
@@ -497,7 +500,7 @@ define([
 					if (responseIds.indexOf(video.videoId) == -1) {
 						invalidIds.push(videoItemIds[video.videoId]);
 						suggestedVideos = suggestVideos(titles[video.videoId])
-						if (!suggestedVideos) {
+						if (suggestedVideos) {
 							html += "<tr>";
 							html += '<td><input type="checkbox" name="' + video.videoId +'"></td>';
 							html += "<td>" + video.playlist + "</td>";
