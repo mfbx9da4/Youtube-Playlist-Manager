@@ -413,6 +413,7 @@ define([
 
 					videoItemIds = {},
 					titles = {},
+					suggestedVideos = [],
 					videoId;
 
 				// get all video ids and titles
@@ -500,23 +501,25 @@ define([
 				_.map(videoIds, function(video) {
 					if (responseIds.indexOf(video.videoId) == -1) {
 						invalidIds.push(videoItemIds[video.videoId]);
-						suggestedVideos = suggestVideos(titles[video.videoId])
-						if (suggestedVideos) {
+						var videos = suggestVideos(titles[video.videoId])
+						if (videos) {
 							html += "<tr>";
-							html += '<td><input checked type="checkbox" name="' + video.videoId +'"></td>';
+							html += '<td><input checked class="deleted-checkbox" type="checkbox" name="' + video.videoId +'"></td>';
 							html += "<td>" + video.playlist + "</td>";
 							html += "<td><a href='https://youtube.com/watch?v=" + video.videoId + "' target='_blank'>" + titles[video.videoId] + "</a></td>";
-							html += "<td>";
-							for (var i = 0; i < suggestedVideos.length; i ++) {
+							html += "<td><form><ul>";
+							for (var i = 0; i < videos.length; i ++) {
 								var checked = i == 0 ? "checked" : ""
 								html += "<li>"
-								html += "<input type='radio' " + checked + " name='" + suggestedVideos[i].videoId +"'> "
-								html += "<a href='https://youtube.com/watch?v=" + suggestedVideos[i].videoId + "' target='_blank'>" + suggestedVideos[i].title + "</a>";
-								html += suggestedVideos[i].duration;
+								html += "<input class='suggested-radio' type='radio' " + checked + " name='" + videos[i].videoId +"'> "
+								html += "<a href='https://youtube.com/watch?v=" + videos[i].videoId + "' target='_blank'>" + videos[i].title + "</a>";
+								html += videos[i].duration;
 								html += "</li>";
 							}
-							html += "</td>"
+							html += "</ul></form></td>"
 							html += "</tr>";
+							$dialog.find("div").html(html);
+							suggestedVideos.push.apply(suggestedVideos, videos);
 						} else {
 							return 5;
 						}
@@ -531,19 +534,32 @@ define([
 
 					$a = $("<a href=\"javascript:void();\">Replace from playlist(s)</a>");
 					$a.on("click", function(e) {
-						alert('are you sure you wish to replace all deleted videos')
+						var getSelectedVideos = function () {
+							var olds = $('.deleted-checkbox:checked');
+							var news = $('.suggested-radio:checked');
+							olds.length == news.length? '' : alert('error arrays not equal')
+							var old_to_new = {};
+							for (var i = 0; i < olds.length; i ++) {
+								old_to_new[olds[i].name] = news[i].name;
+							}
+							return old_to_new;
+						}
 						while (invalidIds.length) { 
+							// get selected video
+							// match to old video
 							// get old position
 							// insert at old position
 							// delete old id
+
 							var getVideoById = function (id) {
 								for (var i = 0; i < videoIds.length; i++) {
 									if (videoIds[i].id == id) {
 										return videoIds[i];
 									}
 								}
-							};
 
+							};
+							var old_to_new = getSelectedVideos();
 							var invalidId = invalidIds.pop();
 							var video = getVideoById(invalidId);
 							var position;
@@ -556,14 +572,17 @@ define([
 									position = data.items[0].snippet.position
 								}
 							);
-							var snippet = {};
-							snippet.playlistId = video.playlistId;
-							snippet.resourceId = video.videoId;
-							snippet.position = video.position;
+							var snippet = {'snippet':{}};
+							snippet.snippet.playlistId = video.playlistId;
+							snippet.snippet.resourceId = {};
+							snippet.snippet.resourceId.videoId = old_to_new[video.videoId];
+							snippet.snippet.resourceId.type = 'youtube#video';
+							snippet.snippet.position = position;
+							console.log(JSON.stringify(snippet))
 							Utils.request("POST", "playlistItems", 
 								{ part : 'snippet'}, 
 								function (data) {
-									position = data.items[0].snippet.position
+									console.log(data)
 								},
 								JSON.stringify(snippet)
 							);

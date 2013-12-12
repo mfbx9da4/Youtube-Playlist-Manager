@@ -51,7 +51,8 @@ define(["jquery"], function($) {
 				type: type,
 				async: async,
 				success: callback,
-				data: body
+				data: body,
+				contentType: 'application/json'
 			});
 		});
 	};
