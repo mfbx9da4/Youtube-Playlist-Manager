@@ -420,7 +420,10 @@ define([
 					_.map(playlist.items, function(item) {
 						videoId = item.snippet.resourceId.videoId;
 
-						videoIds.push({ playlist: playlist.name, videoId: videoId });
+						videoIds.push({ playlist: playlist.name, 
+							playlistId: playlist.id, 
+							videoId: videoId,
+							id: item.id});
 						_videoIds.push(videoId);
 
 						videoItemIds[videoId] = item.id;
@@ -533,7 +536,16 @@ define([
 							// get old position
 							// insert at old position
 							// delete old id
+							var getVideoById = function (id) {
+								for (var i = 0; i < videoIds.length; i++) {
+									if (videoIds[i].id == id) {
+										return videoIds[i];
+									}
+								}
+							};
+
 							var invalidId = invalidIds.pop();
+							var video = getVideoById(invalidId);
 							var position;
 							Utils.request("GET", "playlistItems", 
 								{
