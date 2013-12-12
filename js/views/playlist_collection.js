@@ -441,36 +441,66 @@ define([
 					});
 				}
 
-				var suggestVideo = function (title) {
+				var suggestVideos = function (title) {
 					var stripTitle = function (title) {
+						if (title == "Private video") {
+							return null;
+						}
 						return title.replace(/\[.*\]/g, '').replace(/\(.*\)/g, '');
 					}
 					title = stripTitle(title);
-					var response;
-					Utils.request("GET", "search", { 
-							q: title,
-					    	part: 'snippet'
-						}, function (data) {
-							response = data;
-							console.log(response)
-						}
-					);
-				}
+					console.log(title)
+					var videos = [];
+					if (!title) {
+						return false;
+					} else {
+						var response;
+						Utils.request("GET", "search", { 
+								q: title,
+						    	part: 'snippet'
+							}, function (data) {
+								console.log(data)
+								var items = data.items;
+								for (var i = 0; i < items.length; i ++ ){
+									var video = {};
+									video.videoId = items[i].id.videoId;
+									video.title = items[i].snippet.title;
+									videos.push(video)
+								}
+							}
+						);
+					}
+					console.log(videos)
+					return videos;
+				};
 
-				var html = "<b>The following videos have been banned or removed:</b><hr><table><tr><th>Playlist</th><th>Name</th><th>video id</th></tr>";
+				var html = "<b>The following videos have been banned or removed:</b><hr><table> \
+					<tr> \
+						<th></th> \
+						<th>Playlist</th> \
+						<th>Name</th> \
+						<th>Replacement</th> \
+					</tr>";
 
 				// if videoId not found in response ids search for equivalent
 				// video and suggest replacement
 				_.map(videoIds, function(video) {
 					if (responseIds.indexOf(video.videoId) == -1) {
 						invalidIds.push(videoItemIds[video.videoId]);
-						suggestedVideo = suggestVideo(video.title)
-						if (suggestedVideo) {
-							html += "<tr><td>" + video.playlist + "</td>";
-							html += "<td>" + titles[video.videoId] + "</td>"
-							html += "<td><a href='https://youtube.com/watch?v=" + video.videoId + "' target='_blank'>" + video.videoId + "</a></td></tr>";
+						suggestedVideos = suggestVideos(titles[video.videoId])
+						if (suggestedVideos) {
+							html += "<tr>";
+							html += '<td><input type="checkbox" name="' + video.videoId +'"></td>';
+							html += "<td>" + video.playlist + "</td>";
+							html += "<td><a href='https://youtube.com/watch?v=" + video.videoId + "' target='_blank'>" + titles[video.videoId] + "</a></td>";
+							html += "<td>";
+							for (var i = 0; i < suggestedVideos.length; i ++) {
+								html += "<li><input type='checkbox' name='" + suggestedVideos[i].videoId +"'><a href='https://youtube.com/watch?v=" + suggestedVideos[i].videoId + "' target='_blank'>" + suggestedVideos[i].title + "</a></li>";
+							}
+							html += "</td>"
+							html += "</tr>";
 						} else {
-
+							return 5;
 						}
 					}
 				});

@@ -10,6 +10,7 @@
 			<li class="action_export_playlists">Export playlist(s)</li>
 			<li class="action_find_duplicates">Find duplicates</li>
 			<li class="action_find_deleted_videos">Find deleted videos</li>
+			<li class="action_replace_deleted_videos">Replace deleted videos</li>
 		</ul>
 	</div>
 
