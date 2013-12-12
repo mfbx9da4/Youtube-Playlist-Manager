@@ -8,7 +8,7 @@ define(["jquery"], function($) {
 		if (!access_token_expire || access_token_expire*1000 < new Date().getTime()) {
 			$("#msg_auth").fadeIn(function() {
 				gapi.auth.authorize({
-					"client_id": "716237968116-bfsg986nn1ob5nqir6i7kmsjig4ncf27.apps.googleusercontent.com",
+					"client_id": "788984753858.apps.googleusercontent.com",
 					"scope": "http://gdata.youtube.com"
 				}, function() {
 					var token = gapi.auth.getToken(),

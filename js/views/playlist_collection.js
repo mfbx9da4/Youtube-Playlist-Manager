@@ -17,7 +17,8 @@ define([
 		events: {
 			"click .action_export_playlists": "action_export_playlists",
 			"click .action_find_duplicates": "action_find_duplicates",
-			"click .action_find_deleted_videos": "action_find_deleted_videos"
+			"click .action_find_deleted_videos": "action_find_deleted_videos",
+			"click .action_replace_deleted_videos": "action_replace_deleted_videos"
 		},
 
 		initialize: function() {
@@ -344,6 +345,140 @@ define([
 
 				html += "</table><hr>";
 
+				if (invalidIds.length) {
+
+					$a = $("<a href=\"javascript:void();\">Remove from playlist(s)</a>");
+					$a.on("click", function(e) {
+						while (invalidIds.length) { Utils.request("DELETE", "playlistItems", { id: invalidIds.pop() }); }
+						//delete localStorage.playlists;
+						//location.reload();
+
+						$dialog.find("div").html("Deleted videos removed!");
+					});
+
+					$dialog.find("div").html(html);
+					$dialog.find("div").append($a);
+
+				} else { $dialog.find("div").html("No deleted videos found!"); }
+			};
+
+			$dialog = Utils.dialog("Searching for deleted videos", "<b>retrieving videos ...</b>");
+			_.map(playlists, function(playlist) { request(playlist); });
+
+			interval = window.setInterval(function() {
+				if (count == playlists.length) {
+					$dialog.find("div").html("<b>scanning videos ...</b>")
+					process();
+					window.clearInterval(interval);
+				}
+			}, 100);
+		},
+		action_replace_deleted_videos: function(e) {
+
+			var self = this, playlists = self.get_selection(),
+				count = 0, interval, $dialog;
+
+			if (!playlists.length) { alert("Please select one or more playlists first."); return; }
+
+			var request = function(playlist, pageToken) {
+				var config = {
+					playlistId: playlist.id,
+					part: "snippet",
+					fields: "nextPageToken,items(id,snippet(title,resourceId/videoId))",
+					maxResults: 50,
+					async: true
+				};
+
+				if (typeof pageToken == "string") { config.pageToken = pageToken; }
+				Utils.request("GET", "playlistItems", config, function(data) { success(data, playlist); });
+			},
+
+			success = function(data, playlist) {
+				if (typeof data != "object") { data = JSON.parse(data); }
+
+				[].push.apply(playlist.items, data.items);
+
+				if (typeof data.nextPageToken == "string")
+				{ request(playlist, data.nextPageToken); }
+				else { count++; }
+			},
+
+			process = function() {
+
+				var videoIds = [],
+					_videoIds = [],
+
+					invalidIds = [],
+					responseIds = [],
+
+					videoItemIds = {},
+					titles = {},
+					videoId;
+
+				// get all video ids and titles
+				_.map(playlists, function(playlist) {
+					_.map(playlist.items, function(item) {
+						videoId = item.snippet.resourceId.videoId;
+
+						videoIds.push({ playlist: playlist.name, videoId: videoId });
+						_videoIds.push(videoId);
+
+						videoItemIds[videoId] = item.id;
+						titles[videoId] = item.snippet.title;
+					});
+				});
+
+				// get response ids
+				while (_videoIds.length) {
+					Utils.request("GET", "videos", {
+
+						id: _videoIds.splice(0, 50),
+						part: "id"
+
+					}, function(data) {
+						if (typeof data != "object") { data = JSON.parse(data); }
+						_.map(data.items, function(item) { responseIds.push(item.id); });
+					});
+				}
+
+				var suggestVideo = function (title) {
+					var stripTitle = function (title) {
+						return title.replace(/\[.*\]/g, '').replace(/\(.*\)/g, '');
+					}
+					title = stripTitle(title);
+					var response;
+					Utils.request("GET", "search", { 
+							q: title,
+					    	part: 'snippet'
+						}, function (data) {
+							response = data;
+							console.log(response)
+						}
+					);
+				}
+
+				var html = "<b>The following videos have been banned or removed:</b><hr><table><tr><th>Playlist</th><th>Name</th><th>video id</th></tr>";
+
+				// if videoId not found in response ids search for equivalent
+				// video and suggest replacement
+				_.map(videoIds, function(video) {
+					if (responseIds.indexOf(video.videoId) == -1) {
+						invalidIds.push(videoItemIds[video.videoId]);
+						suggestedVideo = suggestVideo(video.title)
+						if (suggestedVideo) {
+							html += "<tr><td>" + video.playlist + "</td>";
+							html += "<td>" + titles[video.videoId] + "</td>"
+							html += "<td><a href='https://youtube.com/watch?v=" + video.videoId + "' target='_blank'>" + video.videoId + "</a></td></tr>";
+						} else {
+
+						}
+					}
+				});
+
+				html += "</table><hr>";
+
+				// on click replace go through suggested videos and reinsert at old video's
+				// place
 				if (invalidIds.length) {
 
 					$a = $("<a href=\"javascript:void();\">Remove from playlist(s)</a>");
