@@ -457,7 +457,7 @@ define([
 						var response;
 						Utils.request("GET", "search", { 
 								q: title,
-						    	part: 'snippet'
+						    	part: 'snippet,contentDetails'
 							}, function (data) {
 								console.log(data)
 								var items = data.items;
@@ -465,6 +465,8 @@ define([
 									var video = {};
 									video.videoId = items[i].id.videoId;
 									video.title = items[i].snippet.title;
+									Utils.request('GET', 'videos' {id: video.videoId, part:'contentDetails'},
+										function (data) {console.log(data)})
 									videos.push(video)
 								}
 							}
@@ -495,7 +497,7 @@ define([
 							html += "<td><a href='https://youtube.com/watch?v=" + video.videoId + "' target='_blank'>" + titles[video.videoId] + "</a></td>";
 							html += "<td>";
 							for (var i = 0; i < suggestedVideos.length; i ++) {
-								html += "<li><input type='checkbox' name='" + suggestedVideos[i].videoId +"'><a href='https://youtube.com/watch?v=" + suggestedVideos[i].videoId + "' target='_blank'>" + suggestedVideos[i].title + "</a></li>";
+								html += "<li><input type='checkbox' " + i == 0 ? : 'checked' : '' " name='" + suggestedVideos[i].videoId +"'><a href='https://youtube.com/watch?v=" + suggestedVideos[i].videoId + "' target='_blank'>" + suggestedVideos[i].title + "</a></li>";
 							}
 							html += "</td>"
 							html += "</tr>";
