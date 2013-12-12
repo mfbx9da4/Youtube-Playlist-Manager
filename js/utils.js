@@ -39,7 +39,7 @@ define(["jquery"], function($) {
 		return str.join("&");
 	};
 
-	Utils.request = function(type, resource, data, callback) {
+	Utils.request = function(type, resource, data, callback, body) {
 		Utils.auth(function(token) {
 			data.access_token = Utils.cookie.get("access_token");
 
@@ -50,7 +50,8 @@ define(["jquery"], function($) {
 				url: "https://www.googleapis.com/youtube/v3/" + resource + "?" + Utils.serialize(data),
 				type: type,
 				async: async,
-				success: callback
+				success: callback,
+				data: body
 			});
 		});
 	};

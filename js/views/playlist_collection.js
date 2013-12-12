@@ -544,13 +544,16 @@ define([
 									position = data.items[0].snippet.position
 								}
 							);
+							var snippet = {};
+							snippet.playlistId = video.playlistId;
+							snippet.resourceId = video.videoId;
+							snippet.position = video.position;
 							Utils.request("POST", "playlistItems", 
-								{
-									id : invalidId
-									fields: 'items/snippet/position',
-								}, function (data) {
+								{ part : 'snippet'}, 
+								function (data) {
 									position = data.items[0].snippet.position
-								}
+								},
+								JSON.stringify(snippet)
 							);
 							// Utils.request('DELETE', "playlistItems",{id: invalidIds.pop()});
 						}
