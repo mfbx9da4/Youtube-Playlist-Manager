@@ -475,7 +475,7 @@ define([
 											}
 										)
 									} else {
-										video.duration = '';
+										video.duration = ' ';
 									}
 									videos.push(video)
 								}
@@ -502,7 +502,7 @@ define([
 						suggestedVideos = suggestVideos(titles[video.videoId])
 						if (suggestedVideos) {
 							html += "<tr>";
-							html += '<td><input type="checkbox" name="' + video.videoId +'"></td>';
+							html += '<td><input checked type="checkbox" name="' + video.videoId +'"></td>';
 							html += "<td>" + video.playlist + "</td>";
 							html += "<td><a href='https://youtube.com/watch?v=" + video.videoId + "' target='_blank'>" + titles[video.videoId] + "</a></td>";
 							html += "<td>";
@@ -528,13 +528,29 @@ define([
 				// place
 				if (invalidIds.length) {
 
-					$a = $("<a href=\"javascript:void();\">Remove from playlist(s)</a>");
+					$a = $("<a href=\"javascript:void();\">Replace from playlist(s)</a>");
 					$a.on("click", function(e) {
-						while (invalidIds.length) { Utils.request("DELETE", "playlistItems", { id: invalidIds.pop() }); }
+						alert('are you sure you wish to replace all deleted videos')
+						while (invalidIds.length) { 
+							// get old position
+							// insert at old position
+							// delete old id
+							var invalidId = invalidIds.pop();
+							var position
+							Utils.request("GET", "playlistItems", 
+								{
+									part: 'snippet(position)',
+									id : invalidId
+								}, function (data) {
+									console.log(data)
+								}
+							);
+							// Utils.request('DELETE', "playlistItems",{id: invalidIds.pop()});
+						}
 						//delete localStorage.playlists;
 						//location.reload();
 
-						$dialog.find("div").html("Deleted videos removed!");
+						$dialog.find("div").html("Videos replaced!");
 					});
 
 					$dialog.find("div").html(html);
