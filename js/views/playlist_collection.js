@@ -457,16 +457,23 @@ define([
 						var response;
 						Utils.request("GET", "search", { 
 								q: title,
-						    	part: 'snippet,contentDetails'
+						    	part: 'snippet'
 							}, function (data) {
-								console.log(data)
 								var items = data.items;
 								for (var i = 0; i < items.length; i ++ ){
 									var video = {};
 									video.videoId = items[i].id.videoId;
 									video.title = items[i].snippet.title;
-									Utils.request('GET', 'videos' {id: video.videoId, part:'contentDetails'},
-										function (data) {console.log(data)})
+									if (video.videoId) {
+										Utils.request('GET', 'videos', {id: video.videoId, part:'contentDetails'},
+											function (data2) {
+												console.log(data2.items[0].contentDetails.duration)
+												var duration = data2.items[0].contentDetails.duration;
+												duration.replace('PT', '').replace('M', ':').replace('S', '');
+												video.duration = duration;
+											}
+										)
+									}
 									videos.push(video)
 								}
 							}
@@ -490,14 +497,19 @@ define([
 					if (responseIds.indexOf(video.videoId) == -1) {
 						invalidIds.push(videoItemIds[video.videoId]);
 						suggestedVideos = suggestVideos(titles[video.videoId])
-						if (suggestedVideos) {
+						if (!suggestedVideos) {
 							html += "<tr>";
 							html += '<td><input type="checkbox" name="' + video.videoId +'"></td>';
 							html += "<td>" + video.playlist + "</td>";
 							html += "<td><a href='https://youtube.com/watch?v=" + video.videoId + "' target='_blank'>" + titles[video.videoId] + "</a></td>";
 							html += "<td>";
 							for (var i = 0; i < suggestedVideos.length; i ++) {
-								html += "<li><input type='checkbox' " + i == 0 ? : 'checked' : '' " name='" + suggestedVideos[i].videoId +"'><a href='https://youtube.com/watch?v=" + suggestedVideos[i].videoId + "' target='_blank'>" + suggestedVideos[i].title + "</a></li>";
+								var checked = i == 0 ? "checked" : ""
+								html += "<li>"
+								html += "<input type='checkbox' " + checked + " name='" + suggestedVideos[i].videoId +"'>"
+								html += "<a href='https://youtube.com/watch?v=" + suggestedVideos[i].videoId + "' target='_blank'>" + suggestedVideos[i].title + "</a>";
+								html += suggestedVideos[i].duration;
+								html += "</li>";
 							}
 							html += "</td>"
 							html += "</tr>";
