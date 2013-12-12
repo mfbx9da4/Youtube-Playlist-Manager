@@ -468,7 +468,6 @@ define([
 									if (video.videoId) {
 										Utils.request('GET', 'videos', {id: video.videoId, part:'contentDetails'},
 											function (data2) {
-												console.log(data2.items[0].contentDetails.duration)
 												var duration = data2.items[0].contentDetails.duration;
 												duration = duration.replace('PT', '').replace('M', ':').replace('S', '');
 												video.duration = duration;
@@ -482,7 +481,6 @@ define([
 							}
 						);
 					}
-					console.log(videos)
 					return videos;
 				};
 
@@ -509,7 +507,7 @@ define([
 							for (var i = 0; i < suggestedVideos.length; i ++) {
 								var checked = i == 0 ? "checked" : ""
 								html += "<li>"
-								html += "<input type='checkbox' " + checked + " name='" + suggestedVideos[i].videoId +"'>"
+								html += "<input type='radio' " + checked + " name='" + suggestedVideos[i].videoId +"'> "
 								html += "<a href='https://youtube.com/watch?v=" + suggestedVideos[i].videoId + "' target='_blank'>" + suggestedVideos[i].title + "</a>";
 								html += suggestedVideos[i].duration;
 								html += "</li>";
@@ -536,13 +534,22 @@ define([
 							// insert at old position
 							// delete old id
 							var invalidId = invalidIds.pop();
-							var position
+							var position;
 							Utils.request("GET", "playlistItems", 
 								{
-									part: 'snippet(position)',
-									id : invalidId
+									id : invalidId,
+									part: 'snippet',
+									fields: 'items/snippet/position'
 								}, function (data) {
-									console.log(data)
+									position = data.items[0].snippet.position
+								}
+							);
+							Utils.request("POST", "playlistItems", 
+								{
+									id : invalidId
+									fields: 'items/snippet/position',
+								}, function (data) {
+									position = data.items[0].snippet.position
 								}
 							);
 							// Utils.request('DELETE', "playlistItems",{id: invalidIds.pop()});
