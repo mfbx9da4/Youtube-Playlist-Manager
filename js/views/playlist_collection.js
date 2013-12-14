@@ -545,12 +545,6 @@ define([
 							return old_to_new;
 						}
 						while (invalidIds.length) { 
-							// get selected video
-							// match to old video
-							// get old position
-							// insert at old position
-							// delete old id
-
 							var getVideoById = function (id) {
 								for (var i = 0; i < videoIds.length; i++) {
 									if (videoIds[i].id == id) {
@@ -559,9 +553,13 @@ define([
 								}
 
 							};
+
+							// get selected videos
 							var old_to_new = getSelectedVideos();
 							var invalidId = invalidIds.pop();
 							var video = getVideoById(invalidId);
+
+							// get old video position
 							var position;
 							Utils.request("GET", "playlistItems", 
 								{
@@ -572,13 +570,16 @@ define([
 									position = data.items[0].snippet.position
 								}
 							);
+
 							var snippet = {'snippet':{}};
 							snippet.snippet.playlistId = video.playlistId;
 							snippet.snippet.resourceId = {};
 							snippet.snippet.resourceId.videoId = old_to_new[video.videoId];
-							snippet.snippet.resourceId.type = 'youtube#video';
+							snippet.snippet.resourceId.kind = 'youtube#video';
 							snippet.snippet.position = position;
 							console.log(JSON.stringify(snippet))
+
+							// insert at old position
 							Utils.request("POST", "playlistItems", 
 								{ part : 'snippet'}, 
 								function (data) {
@@ -586,7 +587,9 @@ define([
 								},
 								JSON.stringify(snippet)
 							);
-							// Utils.request('DELETE', "playlistItems",{id: invalidIds.pop()});
+
+							// delete old by id
+							Utils.request('DELETE', "playlistItems",{id: invalidIds.pop()});
 						}
 						//delete localStorage.playlists;
 						//location.reload();
