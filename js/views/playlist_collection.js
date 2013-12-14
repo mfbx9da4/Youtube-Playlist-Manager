@@ -453,7 +453,6 @@ define([
 						return title.replace(/\[.*\]/g, '').replace(/\(.*\)/g, '');
 					}
 					title = stripTitle(title);
-					console.log(title)
 					var videos = [];
 					if (!title) {
 						return false;
@@ -577,17 +576,15 @@ define([
 							snippet.snippet.resourceId.videoId = old_to_new[video.videoId];
 							snippet.snippet.resourceId.kind = 'youtube#video';
 							snippet.snippet.position = position;
-							console.log(JSON.stringify(snippet))
 
 							// delete old by id
 							Utils.request('DELETE', "playlistItems",{id: invalidId});
 
 							// insert at old position
-							Utils.request("POST", "playlistItems", 
+							Utils.request("POST", 
+								"playlistItems", 
 								{ part : 'snippet'}, 
-								function (data) {
-									console.log(data)
-								},
+								function (data) {},
 								JSON.stringify(snippet)
 							);
 
