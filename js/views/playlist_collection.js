@@ -511,7 +511,7 @@ define([
 							for (var i = 0; i < videos.length; i ++) {
 								var checked = i == 0 ? "checked" : ""
 								html += "<li>"
-								html += "<input class='suggested-radio' type='radio' " + checked + " name='" + videos[i].videoId +"'> "
+								html += "<input class='suggested-radio' type='radio' " + checked + " name='group" + video.videoId + "'id='" + videos[i].videoId +"'> "
 								html += "<a href='https://youtube.com/watch?v=" + videos[i].videoId + "' target='_blank'>" + videos[i].title + "</a>";
 								html += videos[i].duration;
 								html += "</li>";
@@ -540,7 +540,7 @@ define([
 							olds.length == news.length? '' : alert('error arrays not equal')
 							var old_to_new = {};
 							for (var i = 0; i < olds.length; i ++) {
-								old_to_new[olds[i].name] = news[i].name;
+								old_to_new[olds[i].name] = news[i].id;
 							}
 							return old_to_new;
 						}
@@ -579,6 +579,9 @@ define([
 							snippet.snippet.position = position;
 							console.log(JSON.stringify(snippet))
 
+							// delete old by id
+							Utils.request('DELETE', "playlistItems",{id: invalidId});
+
 							// insert at old position
 							Utils.request("POST", "playlistItems", 
 								{ part : 'snippet'}, 
@@ -588,8 +591,6 @@ define([
 								JSON.stringify(snippet)
 							);
 
-							// delete old by id
-							Utils.request('DELETE', "playlistItems",{id: invalidIds.pop()});
 						}
 						//delete localStorage.playlists;
 						//location.reload();
