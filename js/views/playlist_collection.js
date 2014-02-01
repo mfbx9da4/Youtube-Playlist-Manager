@@ -683,7 +683,7 @@ define([
                                 snippet.snippet.position = position;
 
                                 // delete old by id
-                                // Utils.request('DELETE', "playlistItems",{id: invalidId});
+                                Utils.request('DELETE', "playlistItems",{id: invalidId});
 
                                 // insert at old position
                                 Utils.request("POST",

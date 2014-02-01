@@ -81,7 +81,7 @@ define(["jquery"], function($) {
 		var $dialog_container = $("<div id='dialog_container'></div>"),
 			$dialog = $("<div id='dialog'></div>"),
 			$title = $("<h3>" + title + "</h3>"),
-			$close = $("<a id='dialog_close' href='javascript:void()'>close</a>"),
+			$close = $("<a id='dialog_close' href='#'>close</a>"),
 			$content = $("<div>" + content + "</div>");
 
 		$close.on("click", function() { $("#dialog_container").remove(); });
