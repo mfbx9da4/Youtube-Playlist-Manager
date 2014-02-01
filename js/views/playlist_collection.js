@@ -567,7 +567,7 @@ define([
                                             return items[i].snippet.title;
                                         } else {
                                             return 'No title';
-                                        }
+                                        }}();
                                     if (video.videoId) {
                                         Utils.request('GET', 'videos', {
                                                 id: video.videoId,
@@ -608,16 +608,20 @@ define([
                                 html += '<td><input checked class="deleted-checkbox" type="checkbox" name="' + video.videoId + '"></td>';
                                 html += "<td>" + video.playlist + "</td>";
                                 html += "<td><a href='https://youtube.com/watch?v=" + video.videoId + "' target='_blank'>" + titles[video.videoId] + "</a></td>";
-                                html += "<td><form><ul>";
+                                html += "<td><form><table><tbody>";
                                 for (var i = 0; i < videos.length; i++) {
                                     var checked = i == 0 ? "checked" : ""
-                                    html += "<li>"
+                                    html += "<tr>";
+                                    html += "<td>";
                                     html += "<input class='suggested-radio' type='radio' " + checked + " name='group" + video.videoId + "'id='" + videos[i].videoId + "'> "
+                                    html += "</td>";
+                                    html += "<td>";
                                     html += "<a href='https://youtube.com/watch?v=" + videos[i].videoId + "' target='_blank'>" + videos[i].title + "</a>";
                                     html += "&nbsp;" + videos[i].duration;
-                                    html += "</li>";
+                                    html += "</td>";
+                                    html += "</tr>";
                                 }
-                                html += "</ul></form></td>"
+                                html += "</tbody></table></form></td>"
                                 html += "</tr>";
                                 suggestedVideos.push.apply(suggestedVideos, videos);
                             } else {
