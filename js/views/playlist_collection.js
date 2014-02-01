@@ -670,7 +670,7 @@ define([
                                     part: 'snippet',
                                     fields: 'items/snippet/position'
                                 }, function(data) {
-                                    position = data.items[0].snippet.position
+                                    position = data.items[0] ? data.items[0].snippet.position : 0;
                                 });
 
                                 var snippet = {
