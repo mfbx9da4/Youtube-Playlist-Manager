@@ -130,12 +130,12 @@ define([
                     text = encodeURIComponent(text.join(ln + ln));
                     update();
 
-                    $download = $("<a href=\"javascript:void();\">Download</a>");
+                    $download = $("<a href=\"#\">Download</a>");
                     $download.on("click", function(e) {
                         window.open("data:binary/stream;charset=UTF-8;," + text, "_blank");
                     });
 
-                    $tab = $("<a href=\"javascript:void();\">Open window</a>");
+                    $tab = $("<a href=\"#\">Open window</a>");
                     $tab.on("click", function(e) {
                         window.open("data:text/plain;charset=UTF-8;," + text, "_blank");
                     });
@@ -258,7 +258,7 @@ define([
                     });
 
                     if (duplicates) {
-                        $a = $("<hr><a href=\"javascript:void();\">Remove from playlist(s)</a>");
+                        $a = $("<hr><a href=\"#\">Remove from playlist(s)</a>");
 
                         $a.on("click", function(e) {
                             $dialog.find("div").html("<img src='img/loading.gif'>");
@@ -414,7 +414,7 @@ define([
 
                     if (invalidIds.length) {
 
-                        $a = $("<a href=\"javascript:void();\">Remove from playlist(s)</a>");
+                        $a = $("<a href=\"#\">Remove from playlist(s)</a>");
                         $a.on("click", function(e) {
                             while (invalidIds.length) {
                                 Utils.request("DELETE", "playlistItems", {
@@ -608,14 +608,14 @@ define([
                                 html += '<td><input checked class="deleted-checkbox" type="checkbox" name="' + video.videoId + '"></td>';
                                 html += "<td>" + video.playlist + "</td>";
                                 html += "<td><a href='https://youtube.com/watch?v=" + video.videoId + "' target='_blank'>" + titles[video.videoId] + "</a></td>";
-                                html += "<td><form><table><tbody>";
+                                html += "<td><form><table style='border-spacing:0px'><tbody>";
                                 for (var i = 0; i < videos.length; i++) {
                                     var checked = i == 0 ? "checked" : ""
                                     html += "<tr>";
-                                    html += "<td>";
+                                    html += "<td style='padding:0px'>";
                                     html += "<input class='suggested-radio' type='radio' " + checked + " name='group" + video.videoId + "'id='" + videos[i].videoId + "'> "
                                     html += "</td>";
-                                    html += "<td>";
+                                    html += "<td style='padding:0px; padding-left:5px;'>";
                                     html += "<a href='https://youtube.com/watch?v=" + videos[i].videoId + "' target='_blank'>" + videos[i].title + "</a>";
                                     html += "&nbsp;" + videos[i].duration;
                                     html += "</td>";
@@ -624,13 +624,8 @@ define([
                                 html += "</tbody></table></form></td>"
                                 html += "</tr>";
                                 suggestedVideos.push.apply(suggestedVideos, videos);
-                            } else {
-                                var titles_not_found = true;
-                            }
+                            } 
                             $dialog.find("div").html(html);
-                        }
-                        if (titles_not_found){
-                            html += 'Some deleted videos found but their titles have not been found, so I could not find a replacement. Soz';
                         }
                     });
 
